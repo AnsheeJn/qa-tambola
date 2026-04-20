@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Tambola 🎉</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .msg {
+      font-size: 26px;
+      margin: 25px 10px;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      min-height: 100px;
+      box-shadow: 0 0 10px #00e5ff;
+    }
+
+    button {
+      width: 90%;
+      padding: 12px;
+      margin: 6px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background: #00e5ff;
+      color: black;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    button:active {
+      background: #1de9b6;
+    }
+
+    button.hidden {
+      display: none;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      top: 0;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎉 QA Tambola 🎉<br>Tap your win & perform 😄</h1>
+
+<div class="msg" id="message">👉 Tap your win (or try Test first)</div>
+
+<button onclick="handleClick(this, '🎤 DEMO: Mujhe increment mil gaya… sirf sapne mein 😂')">
+  🎯 Test Run
+</button>
+
+<button onclick="handleClick(this, '⚡ Early 7: Mujhe increment mil gaya… sapne mein 😂')">Early 7</button>
+
+<button onclick="handleClick(this, '🥇 Line 1: Increment ka sapna abhi bhi zinda hai 💭')">Line 1</button>
+
+<button onclick="handleClick(this, '🥈 Line 2: Rating 3.5 aayi hai… main theek hoon 😐')">Line 2</button>
+
+<button onclick="handleClick(this, '🥉 Line 3: Next cycle pakka 🤞 (har saal same line 😆)')">Line 3</button>
+
+<button onclick="handleClick(this, '🔲 Line 4: Manager ko impress karo 😎')">Line 4</button>
+
+<button onclick="handleClick(this, '📊 Line 5: Budget nahi hai 😭')">Line 5</button>
+
+<button onclick="handleClick(this, '🤖 Line 6: Appraisal discussion pending ⏳')">Line 6</button>
+
+<button onclick="handleClick(this, '💥 Housefull: Unexpected bonus mil gaya!!! 😱')">Housefull 1</button>
+
+<button onclick="handleClick(this, '🔥 Housefull: Promotion mil gaya!!! 🚀')">Housefull 2</button>
+
+<script>
+function handleClick(btn, text) {
+  let msg = document.getElementById("message");
+  msg.innerText = text;
+
+  // animation
+  msg.style.transform = "scale(1.1)";
+  setTimeout(() => {
+    msg.style.transform = "scale(1)";
+  }, 200);
+
+  // hide button
+  btn.classList.add("hidden");
+
+  // effects
+  launchConfetti();
+  playWeirdSound();
+}
+
+// 🎉 Confetti
+function launchConfetti() {
+  for (let i = 0; i < 80; i++) {
+    let conf = document.createElement("div");
+    conf.classList.add("confetti");
+
+    conf.style.left = Math.random() * 100 + "vw";
+    conf.style.backgroundColor = getRandomColor();
+    conf.style.animationDuration = (Math.random() * 2 + 1) + "s";
+
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 2000);
+  }
+}
+
+function getRandomColor() {
+  const colors = ["#ff5252", "#ffd740", "#69f0ae", "#40c4ff", "#e040fb"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// 🔊 Weird Sound
+function playWeirdSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = "sawtooth"; // weird sound type
+  osc.frequency.setValueAtTime(300, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.4);
+
+  gain.gain.setValueAtTime(0.3, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime + 0.4);
+}
+</script>
+
+</body>
+</html>
